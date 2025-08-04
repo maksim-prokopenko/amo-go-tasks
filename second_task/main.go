@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 )
 
 // Merge принимает два read-only канала и возвращает выходной канал,
@@ -13,9 +14,11 @@ import (
 //
 // Для проверки решения запустите тесты: go test -v
 func Merge(ch1, ch2 <-chan int) <-chan int {
-	// TODO: реализуйте эту функцию
 
-	return nil
+	if os.Getenv("AMO_GO_TASK_MODE") == "simple" {
+		return merge(ch1, ch2) // самое простое решение
+	}
+	return minimalMerge(ch1, ch2)
 }
 
 func main() {
