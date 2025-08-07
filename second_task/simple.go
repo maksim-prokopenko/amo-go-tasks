@@ -1,8 +1,11 @@
 package main
 
-import "sync"
+import (
+	"sync"
+)
 
-func merge(ch1, ch2 <-chan int) <-chan int {
+func merge2(ch1, ch2 <-chan int) <-chan int {
+	//return merge(ch1, ch2)
 	out := make(chan int)
 
 	var wg sync.WaitGroup
@@ -30,3 +33,25 @@ func merge(ch1, ch2 <-chan int) <-chan int {
 	return out
 }
 
+func merge(chs ...<-chan int) <-chan int {
+	out := make(chan int)
+
+	var wg sync.WaitGroup
+	wg.Add(len(chs))
+
+	go func() {
+		wg.Wait()
+		close(out)
+	}()
+
+	for _, ch := range chs {
+		go func() {
+			defer wg.Done()
+			for v := range ch {
+				out <- v
+			}
+		}()
+	}
+
+	return out
+}
