@@ -16,9 +16,9 @@ import (
 func Merge(ch1, ch2 <-chan int) <-chan int {
 
 	if os.Getenv("AMO_GO_TASK_MODE") == "simple" {
-		return merge(ch1, ch2) // самое простое решение
+		return merge2(ch1, ch2) // самое простое решение
 	}
-	return minimalMerge(ch1, ch2)
+	return hugeMerge(ch1, ch2)
 }
 
 func main() {
