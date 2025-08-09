@@ -53,13 +53,8 @@ func numSeq(len int) []int {
 
 func readAllAndSort(nums <-chan int) []int {
 	var out []int
-	var c int
 	for v := range nums {
 		out = append(out, v)
-		c++
-		if c%100 == 0 {
-			fmt.Println(c)
-		}
 	}
 	slices.Sort(out)
 	return out
